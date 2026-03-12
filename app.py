@@ -29,8 +29,8 @@ def index():
 @app.route("/submit", methods=["POST"])
 def submit():
 
-    name = request.form["name"]
-    email = request.form["email"]
+    name = request.form.get("name")
+    email = request.form.get("email")
 
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
@@ -43,9 +43,10 @@ def submit():
     conn.commit()
     conn.close()
 
-    return render_template("index.html", message="Data Saved Successfully")
+    return render_template("index.html", message="Data Saved")
 
+
+init_db()
 
 if __name__ == "__main__":
-    init_db()
-    app.run(debug=True)
+    app.run()
