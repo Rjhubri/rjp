@@ -1,19 +1,23 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Form Save To DB</title>
+<title>Form</title>
 </head>
+
 <body>
 
 <h2>User Form</h2>
 
+{% if message %}
+<p style="color:green">{{ message }}</p>
+{% endif %}
+
 <form action="/submit" method="post">
 
-<label>Name:</label><br>
+<label>Name</label><br>
 <input type="text" name="name" required><br><br>
 
-<label>Email:</label><br>
+<label>Email</label><br>
 <input type="email" name="email" required><br><br>
 
 <button type="submit">Submit</button>
