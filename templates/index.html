@@ -1,47 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Live Location Share</title>
+
+<title>Checking Location</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
 
 body{
-margin:0;
 font-family:Arial;
-background:#f2f2f2;
 text-align:center;
-}
-
-h2{
-padding:10px;
-}
-
-#map{
-width:100%;
-height:60vh;
-border:none;
-}
-
-.buttons{
-margin-top:20px;
+padding-top:120px;
 }
 
 button{
-width:90%;
-max-width:300px;
-padding:12px;
-margin:10px;
+padding:12px 20px;
 font-size:16px;
-border:none;
-border-radius:6px;
-background:#2196F3;
-color:white;
-}
-
-button:hover{
-background:#1976D2;
 }
 
 </style>
@@ -50,62 +25,41 @@ background:#1976D2;
 
 <body>
 
-<h2>Live Location</h2>
+<h2>Checking Location Permission...</h2>
 
-<div id="map"></div>
-
-<div class="buttons">
-
-<button onclick="shareWhatsApp()">Share on WhatsApp</button>
-
-<button onclick="copyLink()">Copy Location Link</button>
-
-</div>
+<button onclick="checkLocation()">Allow Location</button>
 
 <script>
 
-let lat = "";
-let lon = "";
+function checkLocation(){
 
-window.onload = function(){
+if(!navigator.geolocation){
 
-if(navigator.geolocation){
-
-navigator.geolocation.getCurrentPosition(function(position){
-
-lat = position.coords.latitude;
-lon = position.coords.longitude;
-
-document.getElementById("map").innerHTML =
-'<iframe width="100%" height="100%" src="https://maps.google.com/maps?q='+lat+','+lon+'&z=15&output=embed"></iframe>';
-
-});
-
-}else{
 alert("Location not supported");
-}
+return;
 
 }
 
-function shareWhatsApp(){
+navigator.geolocation.getCurrentPosition(
 
-let link = "https://maps.google.com/?q="+lat+","+lon;
+function(position){
 
-let url = "https://wa.me/?text=My Live Location: "+link;
+// permission mil gaya
+window.location.href="/home";
 
-window.open(url);
+},
+
+function(){
+
+alert("Please allow location permission");
+
+}
+
+);
 
 }
 
-function copyLink(){
-
-let link = "https://maps.google.com/?q="+lat+","+lon;
-
-navigator.clipboard.writeText(link);
-
-alert("Location link copied");
-
-}
+window.onload=checkLocation;
 
 </script>
 
