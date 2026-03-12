@@ -1,15 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page1</title>
+
+<title>Live Location</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+}
+
+#map{
+width:100%;
+height:70vh;
+}
+
+button{
+padding:12px;
+margin:10px;
+font-size:16px;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>Page 1</h1>  
+<h2>Your Live Location</h2>
 
-<a href="/">Home</a><br>
-<a href="/page2">Next Page</a>
+<div id="map"></div>
+
+<button onclick="share()">Share WhatsApp</button>
+<button onclick="copy()">Copy Location</button>
+
+<script>
+
+let lat="";
+let lon="";
+
+navigator.geolocation.getCurrentPosition(function(pos){
+
+lat=pos.coords.latitude;
+lon=pos.coords.longitude;
+
+document.getElementById("map").innerHTML=
+'<iframe width="100%" height="100%" src="https://maps.google.com/maps?q='+lat+','+lon+'&z=15&output=embed"></iframe>';
+
+});
+
+function share(){
+
+let link="https://maps.google.com/?q="+lat+","+lon;
+
+window.open("https://wa.me/?text="+link);
+
+}
+
+function copy(){
+
+let link="https://maps.google.com/?q="+lat+","+lon;
+
+navigator.clipboard.writeText(link);
+
+alert("Location copied");
+
+}
+
+</script>
 
 </body>
-
 </html>
