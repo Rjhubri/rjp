@@ -1,7 +1,52 @@
-from flask import Blueprint, render_template
+from flask import Flask, render_template, request
+import sqlite3
+import os
 
-page2_bp = Blueprint("page2", __name__)
+app = Flask(__name__)
 
-@page2_bp.route("/page2")
-def page2():
-    return render_template("page10.html")
+DB_NAME = "data.db"
+
+def init_db():
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/submit", methods=["POST"])
+def submit():
+
+    name = request.form["name"]
+    email = request.form["email"]
+
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO users (name,email) VALUES (?,?)",
+        (name,email)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return "Data Saved Successfully!"
+
+
+if __name__ == "__main__":
+    init_db()  # database check/create
+    app.run(debug=True)
