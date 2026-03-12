@@ -19,6 +19,12 @@ width:100%;
 height:70vh;
 }
 
+#loading{
+font-size:18px;
+margin-top:20px;
+color:#444;
+}
+
 button{
 padding:12px;
 margin:10px;
@@ -32,6 +38,8 @@ font-size:16px;
 <body>
 
 <h2>Your Live Location</h2>
+
+<div id="loading">Please wait, map is loading...</div>
 
 <div id="map"></div>
 
@@ -48,8 +56,19 @@ navigator.geolocation.getCurrentPosition(function(pos){
 lat=pos.coords.latitude;
 lon=pos.coords.longitude;
 
-document.getElementById("map").innerHTML=
-'<iframe width="100%" height="100%" src="https://maps.google.com/maps?q='+lat+','+lon+'&z=15&output=embed"></iframe>';
+let iframe=document.createElement("iframe");
+
+iframe.width="100%";
+iframe.height="100%";
+iframe.src="https://maps.google.com/maps?q="+lat+","+lon+"&z=15&output=embed";
+
+iframe.onload=function(){
+
+document.getElementById("loading").style.display="none";
+
+};
+
+document.getElementById("map").appendChild(iframe);
 
 });
 
