@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 import sqlite3
-import os
 
 app = Flask(__name__)
 
@@ -11,7 +10,7 @@ def init_db():
     cursor = conn.cursor()
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE IF NOT EXISTS users(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         email TEXT
@@ -44,9 +43,9 @@ def submit():
     conn.commit()
     conn.close()
 
-    return "Data Saved Successfully!"
+    return render_template("index.html", message="Data Saved Successfully")
 
 
 if __name__ == "__main__":
-    init_db()  # database check/create
+    init_db()
     app.run(debug=True)
